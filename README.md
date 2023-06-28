@@ -1,0 +1,2 @@
+# PHPBinaryStream
+binarystream for php
