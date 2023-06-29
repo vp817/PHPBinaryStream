@@ -259,6 +259,24 @@ class BinaryStream
 	}
 
 	/**
+	 * @param float $value
+	 * @return void
+	 */
+	public function writeFloat(float $value): void
+	{
+		$this->write(new Buffer(pack("G", $value)));
+	}
+
+	/**
+	 * @param float $value
+	 * @return void
+	 */
+	public function writeDouble(float $value): void
+	{
+		$this->write(new Buffer(pack("E", $value)));
+	}
+
+	/**
 	 * @param int $value
 	 * @return void
 	 */
@@ -492,6 +510,22 @@ class BinaryStream
 	public function readLongLE(): int
 	{
 		return Buffer::toSignedLongLong($this->read(8)->unpack("P")[1]);
+	}
+
+	/**
+	 * @return float
+	 */
+	public function readFloat(): float
+	{
+		return $this->read(4)->unpack("G")[1];
+	}
+
+	/**
+	 * @return float
+	 */
+	public function readDouble(): float
+	{
+		return $this->read(8)->unpack("E")[1];
 	}
 
 	/**
