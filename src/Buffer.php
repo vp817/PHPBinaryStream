@@ -99,7 +99,7 @@ class Buffer
 	 */
 	public static function limitUnsignedInt(int $value): int
 	{
-		return $value < 0 ? -($value) : $value & 0xffffffff;
+		return ($value < 0 ? -($value) : $value) & 0xffffffff;
 	}
 
 	/**
