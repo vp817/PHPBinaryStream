@@ -1,0 +1,19 @@
+{
+    "name": "vp817/php-binary-stream",
+    "description": "binarystream for php",
+    "type": "library",
+    "license": "GPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "vp817\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "vp817",
+            "email": "118466306+vp817@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
