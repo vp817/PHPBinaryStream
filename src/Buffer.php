@@ -34,9 +34,10 @@ namespace vp817;
 
 use ErrorException;
 
+use function error_get_last;
 use function is_bool;
 use function unpack;
-use function error_get_last;
+use function strlen;
 
 class Buffer
 {
