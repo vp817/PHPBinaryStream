@@ -134,6 +134,7 @@ class Buffer
 	 * @param string $format
 	 * @param int $offset
 	 * @return array
+ 	 * @throws ErrorException
 	 */
 	public function unpack(string $format, int $offset = 0): array
 	{
