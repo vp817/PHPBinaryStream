@@ -156,7 +156,7 @@ class BinaryStream
 	 */
 	public function writeUnsignedTriadBE(int $value): void
 	{
-		$this->write(new Buffer(substr(pack("N", Buffer::limitTriad($value)), 1)));
+		$this->write(new Buffer(substr(pack("N", Buffer::limitUnsignedTriad($value)), 1)));
 	}
 
 	/**
@@ -165,7 +165,7 @@ class BinaryStream
 	 */
 	public function writeTriadBE(int $value): void
 	{
-		$this->writeUnsignedTriadBE(Buffer::toSignedTriad($value));
+		$this->write(new Buffer(substr(pack("N", Buffer::toSignedTriad($value)), 1)));
 	}
 
 	/**
@@ -174,7 +174,7 @@ class BinaryStream
 	 */
 	public function writeUnsignedTriadLE(int $value): void
 	{
-		$this->write(new Buffer(substr(pack("V", Buffer::limitTriad($value)), 0, -1)));
+		$this->write(new Buffer(substr(pack("V", Buffer::limitUnsignedTriad($value)), 0, -1)));
 	}
 
 	/**
@@ -183,7 +183,7 @@ class BinaryStream
 	 */
 	public function writeTriadLE(int $value): void
 	{
-		$this->writeUnsignedTriadLE(Buffer::toSignedTriad($value));
+		$this->write(new Buffer(substr(pack("V", Buffer::toSignedTriad($value)), 0, -1)));
 	}
 
 	/**
@@ -413,9 +413,7 @@ class BinaryStream
 	 */
 	public function readUnsignedTriadBE(): int
 	{
-		$buffer = $this->read(3);
-		$buffer->bytes = "\x00" . $buffer->bytes;
-		return Buffer::limitTriad($buffer->unpack("N")[1]);
+		return Buffer::limitUnsignedTriad($this->read(3)->unpack("N<")[1]);
 	}
 
 	/**
@@ -423,9 +421,7 @@ class BinaryStream
 	 */
 	public function readTriadBE(): int
 	{
-		$buffer = $this->read(3);
-		$buffer->bytes = "\x00" . $buffer->bytes;
-		return Buffer::toSignedTriad($buffer->unpack("N")[1]);
+		return Buffer::toSignedTriad($this->read(3)->unpack("N<")[1]);
 	}
 
 	/**
@@ -433,9 +429,7 @@ class BinaryStream
 	 */
 	public function readUnsignedTriadLE(): int
 	{
-		$buffer = $this->read(3);
-		$buffer->bytes = $buffer->bytes . "\x00";
-		return Buffer::limitTriad($buffer->unpack("V")[1]);
+		return Buffer::limitUnsignedTriad($this->read(3)->unpack("V>")[1]);
 	}
 
 	/**
@@ -443,9 +437,7 @@ class BinaryStream
 	 */
 	public function readTriadLE(): int
 	{
-		$buffer = $this->read(3);
-		$buffer->bytes = $buffer->bytes . "\x00";
-		return Buffer::toSignedTriad($buffer->unpack("V")[1]);
+		return Buffer::toSignedTriad($this->read(3)->unpack("V>")[1]);
 	}
 
 	/**

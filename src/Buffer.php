@@ -89,9 +89,9 @@ class Buffer
 	 * @param int $value
 	 * @return int
 	 */
-	public static function limitTriad(int $value): int
+	public static function limitUnsignedTriad(int $value): int
 	{
-		return $value & 0x00ffffff;
+		return ($value < 0 ? -($value) + 0x989680 : $value) & 0x00ffffff;
 	}
 
 	/**
@@ -119,7 +119,7 @@ class Buffer
 	{
 		$this->bytes .= $buffer->bytes;
 	}
-	
+
 	/**
 	 * @param int $offset
 	 * @param int $size
@@ -138,6 +138,20 @@ class Buffer
 	 */
 	public function unpack(string $format, int $offset = 0): array
 	{
+		$nullByteBE = str_contains($format, "<");
+		$nullByteLE = str_contains($format, ">");
+		if ($nullByteBE)
+		{
+			$this->bytes = "\x00" . $this->bytes;
+		}
+		else if ($nullByteLE)
+		{
+			$this->bytes = $this->bytes . "\x00";
+		}
+		if ($nullByteBE || $nullByteLE)
+		{
+			$format = str_replace(["<", ">"], "", $format);
+		}
 		$value = @unpack($format, $this->bytes, $offset);
 		if (is_bool($value))
 		{
