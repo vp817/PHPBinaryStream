@@ -156,7 +156,7 @@ class BinaryStream
 	 */
 	public function writeUnsignedTriadBE(int $value): void
 	{
-		$this->write(new Buffer(substr(pack("N", Buffer::limitUnsignedTriad($value)), 1)));
+		$this->write(new Buffer(substr(pack("N", Buffer::toUnsignedTriad($value)), 1)));
 	}
 
 	/**
@@ -174,7 +174,7 @@ class BinaryStream
 	 */
 	public function writeUnsignedTriadLE(int $value): void
 	{
-		$this->write(new Buffer(substr(pack("V", Buffer::limitUnsignedTriad($value)), 0, -1)));
+		$this->write(new Buffer(substr(pack("V", Buffer::toUnsignedTriad($value)), 0, -1)));
 	}
 
 	/**
@@ -192,7 +192,7 @@ class BinaryStream
 	 */
 	public function writeUnsignedIntBE(int $value): void
 	{
-		$this->write(new Buffer(pack("N", Buffer::limitUnsignedInt($value))));
+		$this->write(new Buffer(pack("N", Buffer::toSignedInt($value))));
 	}
 
 	/**
@@ -210,7 +210,7 @@ class BinaryStream
 	 */
 	public function writeUnsignedIntLE(int $value): void
 	{
-		$this->write(new Buffer(pack("V", Buffer::limitUnsignedInt($value))));
+		$this->write(new Buffer(pack("V", Buffer::toSignedInt($value))));
 	}
 
 	/**
@@ -413,7 +413,7 @@ class BinaryStream
 	 */
 	public function readUnsignedTriadBE(): int
 	{
-		return Buffer::limitUnsignedTriad($this->read(3)->unpack("N<")[1]);
+		return Buffer::toUnsignedTriad($this->read(3)->unpack("N<")[1]);
 	}
 
 	/**
@@ -429,7 +429,7 @@ class BinaryStream
 	 */
 	public function readUnsignedTriadLE(): int
 	{
-		return Buffer::limitUnsignedTriad($this->read(3)->unpack("V>")[1]);
+		return Buffer::toUnsignedTriad($this->read(3)->unpack("V>")[1]);
 	}
 
 	/**
@@ -445,7 +445,7 @@ class BinaryStream
 	 */
 	public function readUnsignedIntBE(): int
 	{
-		return Buffer::limitUnsignedInt($this->read(4)->unpack("N")[1]);
+		return Buffer::toSignedInt($this->read(4)->unpack("N")[1]);
 	}
 
 	/**
@@ -461,7 +461,7 @@ class BinaryStream
 	 */
 	public function readUnsignedIntLE(): int
 	{
-		return Buffer::limitUnsignedInt($this->read(4)->unpack("V")[1]);
+		return Buffer::toSignedInt($this->read(4)->unpack("V")[1]);
 	}
 
 	/**

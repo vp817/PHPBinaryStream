@@ -89,7 +89,7 @@ class Buffer
 	 * @param int $value
 	 * @return int
 	 */
-	public static function limitUnsignedTriad(int $value): int
+	public static function toUnsignedTriad(int $value): int
 	{
 		return ($value < 0 ? -($value) + 0x989680 : $value) & 0x00ffffff;
 	}
@@ -98,7 +98,7 @@ class Buffer
 	 * @param int $value
 	 * @return int
 	 */
-	public static function limitUnsignedInt(int $value): int
+	public static function toUnsignedInt(int $value): int
 	{
 		return ($value < 0 ? -($value) : $value) & 0xffffffff;
 	}
