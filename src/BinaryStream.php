@@ -282,18 +282,14 @@ class BinaryStream
 	 */
 	public function writeVarInt(int $value): void
 	{
-		for ($i = 0; $i < 5; ++$i)
-		{
+		for ($i = 0; $i < 5; ++$i) {
 			$toWrite = $value & 0x7f;
 
 			$value >>= 7;
 
-			if ($value !== 0x00)
-			{
+			if ($value !== 0x00) {
 				$this->writeUnsignedByte($toWrite | 0x80);
-			}
-			else
-			{
+			} else {
 				$this->writeUnsignedByte($toWrite);
 				break;
 			}
@@ -315,18 +311,14 @@ class BinaryStream
 	 */
 	public function writeVarLong(int $value): void
 	{
-		for ($i = 0; $i < 10; ++$i)
-		{
+		for ($i = 0; $i < 10; ++$i) {
 			$toWrite = $value & 0x7f;
 
 			$value >>= 7;
 
-			if ($value !== 0x00)
-			{
+			if ($value !== 0x00) {
 				$this->writeUnsignedByte($toWrite | 0x80);
-			}
-			else
-			{
+			} else {
 				$this->writeUnsignedByte($toWrite);
 				break;
 			}
@@ -527,14 +519,12 @@ class BinaryStream
 	public function readVarInt(): int
 	{
 		$value = 0;
-		for ($i = 0; $i < 35; $i += 7)
-		{
+		for ($i = 0; $i < 35; $i += 7) {
 			$toRead = $this->readUnsignedByte();
 
 			$value |= ($toRead & 0x7f) << $i;
 
-			if (($toRead & 0x80) == 0x00)
-			{
+			if (($toRead & 0x80) == 0x00) {
 				return $value;
 			}
 		}
@@ -549,7 +539,7 @@ class BinaryStream
 	public function readSignedVarInt(): int
 	{
 		$value = $this->readVarInt();
-		return ($value >> 1) ^ -($value & 1);
+		return ($value >> 1) ^ - ($value & 1);
 	}
 
 	/**
@@ -559,14 +549,12 @@ class BinaryStream
 	public function readVarLong(): int
 	{
 		$value = 0;
-		for ($i = 0; $i < 70; $i += 7)
-		{
+		for ($i = 0; $i < 70; $i += 7) {
 			$toRead = $this->readUnsignedByte();
 
 			$value |= ($toRead & 0x7f) << $i;
 
-			if (($toRead & 0x80) == 0x00)
-			{
+			if (($toRead & 0x80) == 0x00) {
 				return $value;
 			}
 		}
@@ -581,7 +569,7 @@ class BinaryStream
 	public function readSignedVarLong(): int
 	{
 		$value = $this->readVarLong();
-		return ($value >> 1) ^ -($value & 1);
+		return ($value >> 1) ^ - ($value & 1);
 	}
 
 	/**
@@ -590,5 +578,19 @@ class BinaryStream
 	public function readRemaining(): Buffer
 	{
 		return $this->read($this->buffer->getLength() - $this->offset);
+	}
+
+	/**
+	 * @param int $length
+	 * @return void
+	 */
+	public function padWithZeroToLength(int $length): void
+	{
+		$currentBufferLength = $this->buffer->getLength();
+		if ($currentBufferLength < $length) {
+			$paddingLength = $length - $currentBufferLength;
+			$paddingBuffer = new Buffer(str_repeat("\x00", $paddingLength));
+			$this->write($paddingBuffer);
+		}
 	}
 }

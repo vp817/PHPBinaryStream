@@ -91,7 +91,7 @@ class Buffer
 	 */
 	public static function toUnsignedTriad(int $value): int
 	{
-		return ($value < 0 ? -($value) + 0x989680 : $value) & 0x00ffffff;
+		return ($value < 0 ? - ($value) + 0x989680 : $value) & 0x00ffffff;
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Buffer
 	 */
 	public static function toUnsignedInt(int $value): int
 	{
-		return ($value < 0 ? -($value) : $value) & 0xffffffff;
+		return ($value < 0 ? - ($value) : $value) & 0xffffffff;
 	}
 
 	/**
@@ -134,29 +134,60 @@ class Buffer
 	 * @param string $format
 	 * @param int $offset
 	 * @return array
- 	 * @throws ErrorException
+	 * @throws ErrorException
 	 */
 	public function unpack(string $format, int $offset = 0): array
 	{
 		$nullByteBE = str_contains($format, "<");
 		$nullByteLE = str_contains($format, ">");
-		if ($nullByteBE)
-		{
+		if ($nullByteBE) {
 			$this->bytes = "\x00" . $this->bytes;
-		}
-		else if ($nullByteLE)
-		{
+		} else if ($nullByteLE) {
 			$this->bytes = $this->bytes . "\x00";
 		}
-		if ($nullByteBE || $nullByteLE)
-		{
+		if ($nullByteBE || $nullByteLE) {
 			$format = str_replace(["<", ">"], "", $format);
 		}
 		$value = @unpack($format, $this->bytes, $offset);
-		if (is_bool($value))
-		{
+		if (is_bool($value)) {
 			throw new ErrorException(join(" ", error_get_last()));
 		}
 		return $value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function printAsHex(): string
+	{
+		$result = "";
+		$currentLength = $this->getLength();
+		for ($i = 0; $i < $currentLength; ++$i) {
+			$byte = $this->bytes[$i];
+			$byteHex = bin2hex($byte);
+			$result .= $byteHex;
+			if ($i != $currentLength) {
+				$result .= " ";
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * @param bool $turnNullByteToSingle
+	 * @return string
+	 */
+	public function printAsBytes(bool $turnNullByteToSingle = false): string
+	{
+		$result = "";
+		for ($i = 0; $i < $this->getLength(); ++$i) {
+			$byte = $this->bytes[$i];
+			$byteHex = bin2hex($byte);
+			if ($turnNullByteToSingle && ($byteHex == 0)) {
+				$byteHex = 0;
+			}
+			$result .= $byteHex;
+		}
+		return $result;
 	}
 }
