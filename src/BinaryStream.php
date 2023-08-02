@@ -48,8 +48,10 @@ class BinaryStream
 	 * @param Buffer|null $buffer
 	 * @param int $offset
 	 */
-	public function __construct(?Buffer $buffer = null, public int $offset = 0)
-	{
+	public function __construct(
+		?Buffer $buffer = null,
+		public int $offset = 0
+	) {
 		$this->buffer = !is_null($buffer) ? $buffer : new Buffer();
 	}
 
