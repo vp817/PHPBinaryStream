@@ -166,7 +166,7 @@ class Buffer
 			$byte = $this->bytes[$i];
 			$byteHex = bin2hex($byte);
 			$result .= $byteHex;
-			if ($i != $currentLength) {
+			if ($i != $currentLength - 1) {
 				$result .= " ";
 			}
 		}
