@@ -91,7 +91,7 @@ class Buffer
 	 */
 	public static function toUnsignedTriad(int $value): int
 	{
-		return $value < 0 ? 0 : $value & 0xffffff;
+		return $value & 0xffffff;
 	}
 
 	/**
@@ -100,7 +100,7 @@ class Buffer
 	 */
 	public static function toUnsignedInt(int $value): int
 	{
-		return $value < 0 ? 0 : $value & 0xffffffff;
+		return $value & 0xffffffff;
 	}
 
 	/**
