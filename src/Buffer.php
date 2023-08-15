@@ -45,8 +45,9 @@ class Buffer
 	/**
 	 * @param string $bytes
 	 */
-	public function __construct(public string $bytes = "")
-	{
+	public function __construct(
+		public string $bytes = ""
+	) {
 	}
 
 	/**
