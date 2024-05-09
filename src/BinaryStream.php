@@ -588,11 +588,6 @@ class BinaryStream
 	 */
 	public function padWithZeroToLength(int $length): void
 	{
-		$currentBufferLength = $this->buffer->getLength();
-		if ($currentBufferLength < $length) {
-			$paddingLength = $length - $currentBufferLength;
-			$paddingBuffer = new Buffer(str_repeat("\x00", $paddingLength));
-			$this->write($paddingBuffer);
-		}
+		$this->write(new Buffer(str_repeat("\x00", $length)));
 	}
 }
